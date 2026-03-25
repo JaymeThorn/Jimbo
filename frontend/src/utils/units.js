@@ -41,3 +41,9 @@ export const formatDistance = (distance) => {
   const converted = convertDistance(distance, 'km', unit);
   return `${converted.toFixed(2)} ${unit}`;
 };
+
+export const formatPace = (pace) => {
+  const mins = Math.floor(pace);
+  const secs = Math.floor((pace % 1) * 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
