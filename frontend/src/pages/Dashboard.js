@@ -94,8 +94,7 @@ function Dashboard() {
   return (
     <div className="container jimbo-container">
       <div className="jimbo-header">
-        <h1 className="jimbo-title">💪 JIMBO</h1>
-        <p className="jimbo-tagline">Your Gym Bro for Life</p>
+        <h1 className="jimbo-title">JIMBO</h1>
       </div>
 
       <div className="header">

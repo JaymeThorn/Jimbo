@@ -215,8 +215,7 @@ function RunTracker() {
   return (
     <div className="container jimbo-container">
       <div className="jimbo-header-small">
-        <h1 className="jimbo-title-small">💪 JIMBO</h1>
-        <button onClick={() => navigate('/running')} className="btn-back">← Back</button>
+        <h1 className="jimbo-title-small">JIMBO</h1>
       </div>
 
       {showGoalSetup && !isTracking && (

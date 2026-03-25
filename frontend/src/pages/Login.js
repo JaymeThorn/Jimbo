@@ -23,8 +23,7 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="jimbo-auth-header">
-        <h1 className="jimbo-title">💪 JIMBO</h1>
-        <p className="jimbo-tagline">Your Gym Bro for Life</p>
+        <h1 className="jimbo-title">JIMBO</h1>
       </div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
