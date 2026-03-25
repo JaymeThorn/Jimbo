@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createRun } from '../services/api';
 
@@ -10,6 +10,11 @@ function RunTracker() {
   const [route, setRoute] = useState([]);
   const [lastPosition, setLastPosition] = useState(null);
   const [watchId, setWatchId] = useState(null);
+  const [currentSpeed, setCurrentSpeed] = useState(0);
+  const [splits, setSplits] = useState([]);
+  const [predictedTime, setPredictedTime] = useState(null);
+  const [routeName, setRouteName] = useState('');
+  const lastMoveTime = useRef(Date.now());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,10 +22,28 @@ function RunTracker() {
     if (isTracking && !isPaused) {
       interval = setInterval(() => {
         setDuration(prev => prev + 1);
+        
+        // Auto-pause detection (no movement for 10 seconds)
+        if (Date.now() - lastMoveTime.current > 10000 && currentSpeed < 0.5) {
+          setIsPaused(true);
+        }
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isTracking, isPaused]);
+  }, [isTracking, isPaused, currentSpeed]);
+
+  // Calculate predicted finish times
+  useEffect(() => {
+    if (distance > 1 && duration > 0) {
+      const currentPace = duration / distance; // seconds per km
+      setPredictedTime({
+        '5k': formatTime(currentPace * 5),
+        '10k': formatTime(currentPace * 10),
+        'half': formatTime(currentPace * 21.0975),
+        'full': formatTime(currentPace * 42.195)
+      });
+    }
+  }, [distance, duration]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Earth's radius in km
@@ -46,17 +69,23 @@ function RunTracker() {
     setDuration(0);
     setRoute([]);
     setLastPosition(null);
+    setSplits([]);
+    lastMoveTime.current = Date.now();
 
     const id = navigator.geolocation.watchPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
+        const { latitude, longitude, altitude, speed } = position.coords;
         const newPoint = {
           lat: latitude,
           lng: longitude,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          elevation: altitude || 0,
+          speed: speed ? speed * 3.6 : 0 // convert m/s to km/h
         };
 
         setRoute(prev => [...prev, newPoint]);
+        setCurrentSpeed(newPoint.speed);
+        lastMoveTime.current = Date.now();
 
         if (lastPosition) {
           const dist = calculateDistance(
@@ -65,7 +94,22 @@ function RunTracker() {
             latitude,
             longitude
           );
-          setDistance(prev => prev + dist);
+          
+          const newDistance = distance + dist;
+          setDistance(newDistance);
+          
+          // Check for km splits
+          const currentKm = Math.floor(newDistance);
+          const previousKm = Math.floor(distance);
+          if (currentKm > previousKm && currentKm > 0) {
+            const splitTime = duration;
+            const lastSplitTime = splits.length > 0 ? splits[splits.length - 1].time : 0;
+            setSplits(prev => [...prev, {
+              km: currentKm,
+              time: splitTime - lastSplitTime,
+              pace: (splitTime - lastSplitTime) / 60
+            }]);
+          }
         }
 
         setLastPosition({ lat: latitude, lng: longitude });
@@ -107,7 +151,7 @@ function RunTracker() {
         duration,
         pace,
         route,
-        date: new Date()
+        routeName: routeName || undefined
       });
       navigate('/running');
     } catch (err) {
@@ -150,6 +194,18 @@ function RunTracker() {
       <h2>Track Run</h2>
 
       <div className="run-tracker">
+        {!isTracking && (
+          <div className="route-name-input">
+            <label>Route Name (optional)</label>
+            <input
+              type="text"
+              value={routeName}
+              onChange={(e) => setRouteName(e.target.value)}
+              placeholder="e.g., Morning Loop, Park Run"
+            />
+          </div>
+        )}
+
         <div className="run-stats-display">
           <div className="run-stat-large">
             <div className="stat-value-large">{distance.toFixed(2)}</div>
@@ -165,8 +221,37 @@ function RunTracker() {
               <div className="stat-value">{formatPace()}</div>
               <div className="stat-label">Pace (min/km)</div>
             </div>
+            <div className="run-stat">
+              <div className="stat-value">{currentSpeed.toFixed(1)}</div>
+              <div className="stat-label">km/h</div>
+            </div>
           </div>
         </div>
+
+        {splits.length > 0 && (
+          <div className="splits-display">
+            <h3>Splits</h3>
+            {splits.map((split, idx) => (
+              <div key={idx} className="split-row">
+                <span>Km {split.km}</span>
+                <span>{formatTime(split.time)}</span>
+                <span>{split.pace.toFixed(2)} min/km</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {predictedTime && distance > 1 && (
+          <div className="predictions">
+            <h3>Predicted Times</h3>
+            <div className="prediction-grid">
+              <div><strong>5K:</strong> {predictedTime['5k']}</div>
+              <div><strong>10K:</strong> {predictedTime['10k']}</div>
+              <div><strong>Half:</strong> {predictedTime['half']}</div>
+              <div><strong>Full:</strong> {predictedTime['full']}</div>
+            </div>
+          </div>
+        )}
 
         <div className="run-controls">
           {!isTracking ? (
@@ -191,13 +276,13 @@ function RunTracker() {
         {isTracking && (
           <div className="tracking-indicator">
             <span className="pulse-dot"></span>
-            {isPaused ? 'Paused' : 'Tracking...'}
+            {isPaused ? 'Paused (Auto-pause)' : 'Tracking...'}
           </div>
         )}
 
         <div className="run-info">
-          <p>📍 GPS points recorded: {route.length}</p>
-          <p>💡 Keep your phone with you and GPS enabled</p>
+          <p>📍 GPS points: {route.length}</p>
+          <p>💡 Auto-pause • Split times per km</p>
         </div>
       </div>
     </div>

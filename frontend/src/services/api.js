@@ -59,3 +59,15 @@ export const deleteRun = (id) =>
 
 export const getRunStats = () => 
   api.get('/runs/stats');
+
+export const getHeatmapData = () =>
+  api.get('/runs/heatmap');
+
+export const getFriendsRuns = () =>
+  api.get('/runs/friends');
+
+export const shareRun = (id) =>
+  api.post(`/runs/${id}/share`);
+
+export const getSegmentLeaderboard = (routeName) =>
+  api.get(`/runs/segment/${routeName}`);

@@ -25,9 +25,54 @@ const runSchema = new mongoose.Schema({
   route: [{
     lat: Number,
     lng: Number,
-    timestamp: Number
+    timestamp: Number,
+    elevation: Number, // meters
+    speed: Number // km/h
   }],
+  splits: [{
+    distance: Number, // km
+    time: Number, // seconds
+    pace: Number // min/km
+  }],
+  elevationGain: {
+    type: Number,
+    default: 0
+  },
+  elevationLoss: {
+    type: Number,
+    default: 0
+  },
+  heartRate: {
+    avg: Number,
+    max: Number,
+    zones: {
+      zone1: Number, // % time in zone
+      zone2: Number,
+      zone3: Number,
+      zone4: Number,
+      zone5: Number
+    }
+  },
+  weather: {
+    temp: Number,
+    condition: String,
+    humidity: Number
+  },
+  paceZone: {
+    type: String,
+    enum: ['easy', 'tempo', 'threshold', 'interval', 'recovery']
+  },
+  routeName: String, // for segment tracking
+  isShared: {
+    type: Boolean,
+    default: false
+  },
   notes: String
 }, { timestamps: true });
+
+// Index for finding personal records
+runSchema.index({ userId: 1, distance: 1, duration: 1 });
+runSchema.index({ userId: 1, date: -1 });
+runSchema.index({ routeName: 1, duration: 1 }); // for segment leaderboards
 
 module.exports = mongoose.model('Run', runSchema);

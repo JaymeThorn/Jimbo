@@ -10,6 +10,8 @@ import HealthSync from './pages/HealthSync';
 import Running from './pages/Running';
 import RunTracker from './pages/RunTracker';
 import RunDetail from './pages/RunDetail';
+import RunDetailEnhanced from './pages/RunDetailEnhanced';
+import RunningDashboard from './pages/RunningDashboard';
 import Settings from './pages/Settings';
 import PrivateRoute from './components/PrivateRoute';
 import ThemeToggle from './components/ThemeToggle';
@@ -29,9 +31,10 @@ function App() {
           <Route path="/templates" element={<PrivateRoute><Templates /></PrivateRoute>} />
           <Route path="/progress" element={<PrivateRoute><Progress /></PrivateRoute>} />
           <Route path="/health-sync" element={<PrivateRoute><HealthSync /></PrivateRoute>} />
-          <Route path="/running" element={<PrivateRoute><Running /></PrivateRoute>} />
+          <Route path="/running" element={<PrivateRoute><RunningDashboard /></PrivateRoute>} />
+          <Route path="/running/all" element={<PrivateRoute><Running /></PrivateRoute>} />
           <Route path="/run-tracker" element={<PrivateRoute><RunTracker /></PrivateRoute>} />
-          <Route path="/run/:id" element={<PrivateRoute><RunDetail /></PrivateRoute>} />
+          <Route path="/run/:id" element={<PrivateRoute><RunDetailEnhanced /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
