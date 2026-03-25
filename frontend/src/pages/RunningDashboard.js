@@ -17,13 +17,14 @@ function RunningDashboard() {
 
   const loadData = async () => {
     try {
-      const [statsData, runsData, friendsData] = await Promise.all([
+      const [statsData, runsResponse, friendsData] = await Promise.all([
         getRunStats(),
         getRuns(),
         getFriendsRuns().catch(() => [])
       ]);
       setStats(statsData);
-      setRecentRuns(runsData.slice(0, 5));
+      const runsData = runsResponse.data || runsResponse || [];
+      setRecentRuns(Array.isArray(runsData) ? runsData.slice(0, 5) : []);
       setFriendsRuns(friendsData);
     } catch (err) {
       console.error('Failed to load running data:', err);
