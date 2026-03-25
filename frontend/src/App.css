@@ -1856,6 +1856,93 @@ body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
   background: var(--bg-secondary);
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .jimbo-nav {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .jimbo-nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .jimbo-nav-links a,
+  .jimbo-nav-links button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .jimbo-title {
+    font-size: 48px;
+  }
+
+  .run-stats-display {
+    padding: 16px;
+  }
+
+  .run-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .run-stat {
+    padding: 12px 8px;
+  }
+
+  .stat-value-large {
+    font-size: 36px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .run-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-large {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .btn-jimbo-primary {
+    font-size: 20px;
+    padding: 20px;
+  }
+
+  .splits-display,
+  .predictions {
+    padding: 12px;
+  }
+
+  .split-row {
+    font-size: 13px;
+  }
+
+  .prediction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .goal-progress-card {
+    padding: 16px;
+  }
+
+  .goal-remaining-value {
+    font-size: 28px;
+  }
+}
+
 .jimbo-auth-header {
   text-align: center;
   margin-bottom: 30px;

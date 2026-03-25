@@ -101,20 +101,23 @@ function RunTracker() {
             longitude
           );
           
-          const newDistance = distance + dist;
-          setDistance(newDistance);
-          
-          // Check for km splits
-          const currentKm = Math.floor(newDistance);
-          const previousKm = Math.floor(distance);
-          if (currentKm > previousKm && currentKm > 0) {
-            const splitTime = duration;
-            const lastSplitTime = splits.length > 0 ? splits[splits.length - 1].time : 0;
-            setSplits(prev => [...prev, {
-              km: currentKm,
-              time: splitTime - lastSplitTime,
-              pace: (splitTime - lastSplitTime) / 60
-            }]);
+          // Only add distance if movement is significant (more than 2 meters)
+          if (dist > 0.002) {
+            const newDistance = distance + dist;
+            setDistance(newDistance);
+            
+            // Check for km splits
+            const currentKm = Math.floor(newDistance);
+            const previousKm = Math.floor(distance);
+            if (currentKm > previousKm && currentKm > 0) {
+              const splitTime = duration;
+              const lastSplitTime = splits.length > 0 ? splits[splits.length - 1].time : 0;
+              setSplits(prev => [...prev, {
+                km: currentKm,
+                time: splitTime - lastSplitTime,
+                pace: (splitTime - lastSplitTime) / 60
+              }]);
+            }
           }
         }
 
@@ -127,7 +130,8 @@ function RunTracker() {
       {
         enableHighAccuracy: true,
         maximumAge: 0,
-        timeout: 5000
+        timeout: 10000,
+        distanceFilter: 2 // Only update when moved 2 meters
       }
     );
 
@@ -143,8 +147,8 @@ function RunTracker() {
       navigator.geolocation.clearWatch(watchId);
     }
 
-    if (distance === 0) {
-      alert('No distance recorded');
+    if (distance < 0.01) {
+      alert('Distance too short. Keep running for at least 10 meters!');
       resetTracking();
       return;
     }
