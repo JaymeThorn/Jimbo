@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createRun } from '../services/api';
 
 function RunTracker() {
+  const [searchParams] = useSearchParams();
+  const isGoalRun = searchParams.get('goal') === 'true';
+  
   const [isTracking, setIsTracking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [distance, setDistance] = useState(0);
@@ -14,6 +17,9 @@ function RunTracker() {
   const [splits, setSplits] = useState([]);
   const [predictedTime, setPredictedTime] = useState(null);
   const [routeName, setRouteName] = useState('');
+  const [goalType, setGoalType] = useState('distance'); // distance, time, pace
+  const [goalValue, setGoalValue] = useState('');
+  const [showGoalSetup, setShowGoalSetup] = useState(isGoalRun);
   const lastMoveTime = useRef(Date.now());
   const navigate = useNavigate();
 
@@ -187,30 +193,103 @@ function RunTracker() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const calculateGoalProgress = () => {
+    if (!goalValue) return null;
+    
+    if (goalType === 'distance') {
+      const target = parseFloat(goalValue);
+      const remaining = Math.max(0, target - distance);
+      const progress = Math.min(100, (distance / target) * 100);
+      return { remaining: remaining.toFixed(2), unit: 'km', progress };
+    } else if (goalType === 'time') {
+      const target = parseInt(goalValue) * 60; // minutes to seconds
+      const remaining = Math.max(0, target - duration);
+      const progress = Math.min(100, (duration / target) * 100);
+      return { remaining: formatTime(remaining), unit: '', progress };
+    }
+    return null;
+  };
+
+  const goalProgress = calculateGoalProgress();
+
   return (
-    <div className="container">
-      <button onClick={() => navigate('/running')} className="btn-secondary">← Back</button>
-      
-      <h2>Track Run</h2>
+    <div className="container jimbo-container">
+      <div className="jimbo-header-small">
+        <h1 className="jimbo-title-small">💪 JIMBO</h1>
+        <button onClick={() => navigate('/running')} className="btn-back">← Back</button>
+      </div>
 
-      <div className="run-tracker">
-        {!isTracking && (
-          <div className="route-name-input">
-            <label>Route Name (optional)</label>
+      {showGoalSetup && !isTracking && (
+        <div className="goal-setup">
+          <h2>🎯 Set Your Goal</h2>
+          <div className="goal-type-selector">
+            <button 
+              className={goalType === 'distance' ? 'active' : ''}
+              onClick={() => setGoalType('distance')}
+            >
+              Distance
+            </button>
+            <button 
+              className={goalType === 'time' ? 'active' : ''}
+              onClick={() => setGoalType('time')}
+            >
+              Time
+            </button>
+          </div>
+          <div className="goal-input">
             <input
-              type="text"
-              value={routeName}
-              onChange={(e) => setRouteName(e.target.value)}
-              placeholder="e.g., Morning Loop, Park Run"
+              type="number"
+              value={goalValue}
+              onChange={(e) => setGoalValue(e.target.value)}
+              placeholder={goalType === 'distance' ? 'e.g., 5' : 'e.g., 30'}
             />
+            <span className="goal-unit">{goalType === 'distance' ? 'km' : 'minutes'}</span>
           </div>
-        )}
+          <button 
+            onClick={() => setShowGoalSetup(false)} 
+            className="btn-jimbo-primary"
+            disabled={!goalValue}
+          >
+            Let's Go! 💪
+          </button>
+        </div>
+      )}
 
-        <div className="run-stats-display">
-          <div className="run-stat-large">
-            <div className="stat-value-large">{distance.toFixed(2)}</div>
-            <div className="stat-label">Kilometers</div>
-          </div>
+      {!showGoalSetup && (
+        <div className="run-tracker">
+          {!isTracking && (
+            <div className="route-name-input">
+              <label>Route Name (optional)</label>
+              <input
+                type="text"
+                value={routeName}
+                onChange={(e) => setRouteName(e.target.value)}
+                placeholder="e.g., Morning Loop, Park Run"
+              />
+            </div>
+          )}
+
+          {goalProgress && isTracking && (
+            <div className="goal-progress-card">
+              <h3>🎯 Goal Progress</h3>
+              <div className="goal-progress-bar">
+                <div className="goal-progress-fill" style={{width: `${goalProgress.progress}%`}}></div>
+              </div>
+              <div className="goal-remaining">
+                <span className="goal-remaining-value">{goalProgress.remaining}</span>
+                <span className="goal-remaining-label">{goalProgress.unit} remaining</span>
+              </div>
+              {goalProgress.progress >= 100 && (
+                <div className="goal-achieved">🎉 GOAL SMASHED! 🎉</div>
+              )}
+            </div>
+          )}
+
+          <div className="run-stats-display">
+            <div className="run-stat-large">
+              <div className="stat-value-large">{distance.toFixed(2)}</div>
+              <div className="stat-label">Kilometers</div>
+            </div>
 
           <div className="run-stats-row">
             <div className="run-stat">
@@ -284,7 +363,8 @@ function RunTracker() {
           <p>📍 GPS points: {route.length}</p>
           <p>💡 Auto-pause • Split times per km</p>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,6 +22,10 @@ function Register() {
 
   return (
     <div className="auth-container">
+      <div className="jimbo-auth-header">
+        <h1 className="jimbo-title">💪 JIMBO</h1>
+        <p className="jimbo-tagline">Your Gym Bro for Life</p>
+      </div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input

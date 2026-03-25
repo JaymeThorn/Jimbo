@@ -56,11 +56,18 @@ function RunningDashboard() {
   }
 
   return (
-    <div className="container">
-      <div className="dashboard-header">
-        <h2>Running</h2>
-        <button onClick={() => navigate('/run-tracker')} className="btn">
-          Track New Run
+    <div className="container jimbo-container">
+      <div className="jimbo-header">
+        <h1 className="jimbo-title">💪 JIMBO</h1>
+        <p className="jimbo-tagline">Your Gym Bro for Life</p>
+      </div>
+
+      <div className="run-action-buttons">
+        <button onClick={() => navigate('/run-tracker')} className="btn-jimbo-primary">
+          🏃 START RUN
+        </button>
+        <button onClick={() => navigate('/run-tracker?goal=true')} className="btn-jimbo-secondary">
+          🎯 Goal Run
         </button>
       </div>
 

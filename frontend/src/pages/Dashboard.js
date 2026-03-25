@@ -92,7 +92,12 @@ function Dashboard() {
   if (loading) return <div className="container">Loading...</div>;
 
   return (
-    <div className="container">
+    <div className="container jimbo-container">
+      <div className="jimbo-header">
+        <h1 className="jimbo-title">💪 JIMBO</h1>
+        <p className="jimbo-tagline">Your Gym Bro for Life</p>
+      </div>
+
       <div className="header">
         <h2>Activity Feed</h2>
         <div>
