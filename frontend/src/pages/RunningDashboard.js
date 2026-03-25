@@ -77,15 +77,15 @@ function RunningDashboard() {
         <div className="stat-card challenge-card">
           <div className="stat-icon">🎯</div>
           <div className="stat-content">
-            <div className="stat-value">{stats.monthlyChallenge.percentage}%</div>
+            <div className="stat-value">{stats.monthlyChallenge?.percentage || 0}%</div>
             <div className="stat-label">Monthly Challenge</div>
             <div className="stat-sublabel">
-              {stats.monthlyChallenge.current.toFixed(1)} / {stats.monthlyChallenge.target} km
+              {stats.monthlyChallenge?.current?.toFixed(1) || 0} / {stats.monthlyChallenge?.target || 100} km
             </div>
             <div className="progress-bar">
               <div 
                 className="progress-fill" 
-                style={{width: `${stats.monthlyChallenge.percentage}%`}}
+                style={{width: `${stats.monthlyChallenge?.percentage || 0}%`}}
               ></div>
             </div>
           </div>
