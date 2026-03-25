@@ -112,10 +112,10 @@ function ActivityFeed() {
                 <div className="feed-header">
                   <div className="feed-user">
                     <div className="user-avatar">
-                      {run.userId.name?.[0] || run.userId.email[0].toUpperCase()}
+                      {run.userId?.name?.[0] || run.userId?.email?.[0]?.toUpperCase() || '?'}
                     </div>
                     <div>
-                      <div className="user-name">{run.userId.name || run.userId.email}</div>
+                      <div className="user-name">{run.userId?.name || run.userId?.email || 'Unknown'}</div>
                       <div className="feed-date">
                         {new Date(run.date).toLocaleDateString()} at {new Date(run.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                       </div>
