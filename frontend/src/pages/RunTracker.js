@@ -11,7 +11,6 @@ function RunTracker() {
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [route, setRoute] = useState([]);
-  const [lastPosition, setLastPosition] = useState(null);
   const [watchId, setWatchId] = useState(null);
   const [currentSpeed, setCurrentSpeed] = useState(0);
   const [splits, setSplits] = useState([]);
@@ -21,6 +20,7 @@ function RunTracker() {
   const [goalValue, setGoalValue] = useState('');
   const [showGoalSetup, setShowGoalSetup] = useState(isGoalRun);
   const lastMoveTime = useRef(Date.now());
+  const lastPosition = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function RunTracker() {
     setDistance(0);
     setDuration(0);
     setRoute([]);
-    setLastPosition(null);
+    lastPosition.current = null;
     setSplits([]);
     lastMoveTime.current = Date.now();
 
@@ -93,26 +93,25 @@ function RunTracker() {
         setCurrentSpeed(newPoint.speed);
         lastMoveTime.current = Date.now();
 
-        setLastPosition(prevPos => {
-          if (prevPos) {
-            const dist = calculateDistance(
-              prevPos.lat,
-              prevPos.lng,
-              latitude,
-              longitude
-            );
-            
-            // Add any movement over 1 meter
-            if (dist > 0.001) {
-              setDistance(prev => {
-                const newDist = prev + dist;
-                console.log('Distance updated:', newDist.toFixed(3), 'km');
-                return newDist;
-              });
-            }
+        if (lastPosition.current) {
+          const dist = calculateDistance(
+            lastPosition.current.lat,
+            lastPosition.current.lng,
+            latitude,
+            longitude
+          );
+          
+          // Add any movement over 1 meter
+          if (dist > 0.001) {
+            setDistance(prev => {
+              const newDist = prev + dist;
+              console.log('Distance updated:', newDist.toFixed(3), 'km');
+              return newDist;
+            });
           }
-          return { lat: latitude, lng: longitude };
-        });
+        }
+        
+        lastPosition.current = { lat: latitude, lng: longitude };
       },
       (error) => {
         console.error('GPS error:', error);
@@ -175,7 +174,7 @@ function RunTracker() {
     setDistance(0);
     setDuration(0);
     setRoute([]);
-    setLastPosition(null);
+    lastPosition.current = null;
     setWatchId(null);
   };
 
