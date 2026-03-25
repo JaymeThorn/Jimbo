@@ -4,14 +4,17 @@ const User = require('../models/User');
 
 exports.register = async (req, res) => {
   try {
+    console.log('Register request received:', req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('User already exists:', email);
       return res.status(400).json({ error: 'User already exists' });
     }
 
@@ -21,8 +24,10 @@ exports.register = async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+    console.log('User registered successfully:', email);
     res.status(201).json({ token, userId: user._id, email: user.email });
   } catch (error) {
+    console.error('Register error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
