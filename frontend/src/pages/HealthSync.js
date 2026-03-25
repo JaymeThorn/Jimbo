@@ -310,16 +310,6 @@ function HealthSync() {
       });
 
       // Add distance data
-      const distanceDataSource = {
-        dataStreamName: 'Distance',
-        type: 'derived',
-        application: { name: 'Gym Tracker' },
-        dataType: {
-          name: 'com.google.distance.delta',
-          field: [{ name: 'distance', format: 'floatPoint' }]
-        }
-      };
-
       const distanceData = {
         minStartTimeNs: startTime * 1000000,
         maxEndTimeNs: endTime * 1000000,

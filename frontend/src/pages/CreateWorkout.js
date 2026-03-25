@@ -15,7 +15,6 @@ function CreateWorkout() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [showSaveTemplate, setShowSaveTemplate] = useState(false);
   const [templateName, setTemplateName] = useState('');
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +24,6 @@ function CreateWorkout() {
 
   const loadExerciseImages = async () => {
     await fetchExerciseImages();
-    setImagesLoaded(true);
   };
 
   const fetchData = async () => {

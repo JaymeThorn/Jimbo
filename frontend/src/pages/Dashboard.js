@@ -19,6 +19,7 @@ function Dashboard() {
     const handleUnitsChange = () => forceUpdate({});
     window.addEventListener('unitsChanged', handleUnitsChange);
     return () => window.removeEventListener('unitsChanged', handleUnitsChange);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchData = async () => {

@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getTemplates, createTemplate, deleteTemplate, createWorkout } from '../services/api';
+import { getTemplates, deleteTemplate, createWorkout } from '../services/api';
 
 function Templates() {
   const [templates, setTemplates] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
-  const [name, setName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {

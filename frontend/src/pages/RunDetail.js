@@ -11,6 +11,7 @@ function RunDetail() {
 
   useEffect(() => {
     fetchRun();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchRun = async () => {

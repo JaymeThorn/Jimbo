@@ -9,6 +9,7 @@ function WorkoutDetail() {
 
   useEffect(() => {
     fetchWorkout();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchWorkout = async () => {
