@@ -9,7 +9,6 @@ import Progress from './pages/Progress';
 import HealthSync from './pages/HealthSync';
 import Running from './pages/Running';
 import RunTracker from './pages/RunTracker';
-import RunDetail from './pages/RunDetail';
 import RunDetailEnhanced from './pages/RunDetailEnhanced';
 import RunningDashboard from './pages/RunningDashboard';
 import Settings from './pages/Settings';
