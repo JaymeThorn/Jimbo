@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getStats, getRunStats } from '../services/api';
 import { Line } from 'react-chartjs-2';
 import { formatDistance } from '../utils/units';
@@ -29,7 +28,6 @@ function Progress() {
   const [runStats, setRunStats] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState('');
   const [view, setView] = useState('workout'); // workout or running
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStats();
