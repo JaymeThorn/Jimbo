@@ -1856,9 +1856,6 @@ body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
   background: var(--bg-secondary);
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-
 .view-toggle {
   display: flex;
   gap: 12px;
