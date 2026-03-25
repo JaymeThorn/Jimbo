@@ -37,12 +37,14 @@ export const formatWeight = (weight) => {
 };
 
 export const formatDistance = (distance) => {
+  if (distance === undefined || distance === null || isNaN(distance)) return '0 km';
   const unit = getDistanceUnit();
   const converted = convertDistance(distance, 'km', unit);
   return `${converted.toFixed(2)} ${unit}`;
 };
 
 export const formatPace = (pace) => {
+  if (pace === undefined || pace === null || isNaN(pace)) return '0:00';
   const mins = Math.floor(pace);
   const secs = Math.floor((pace % 1) * 60);
   return `${mins}:${secs.toString().padStart(2, '0')}`;
