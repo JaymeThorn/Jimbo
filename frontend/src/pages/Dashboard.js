@@ -99,15 +99,6 @@ function Dashboard() {
 
       <div className="header">
         <h2>Activity Feed</h2>
-        <div>
-          <Link to="/running" className="btn">Running</Link>
-          <Link to="/create-workout" className="btn">New Workout</Link>
-          <Link to="/templates" className="btn-secondary">Templates</Link>
-          <Link to="/progress" className="btn-secondary">Progress</Link>
-          <Link to="/health-sync" className="btn-secondary">Sync</Link>
-          <Link to="/settings" className="btn-secondary">Settings</Link>
-          <button onClick={handleLogout} className="btn-secondary">Logout</button>
-        </div>
       </div>
 
       {/* Stats Cards */}
