@@ -1858,6 +1858,41 @@ body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+
+.view-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  background: var(--bg-secondary);
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.view-toggle button {
+  flex: 1;
+  padding: 12px 24px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.view-toggle button.active {
+  background: #ff6b35;
+  color: white;
+  border-color: #ff6b35;
+}
+
+.view-toggle button:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
   .jimbo-nav {
     flex-direction: column;
     gap: 12px;

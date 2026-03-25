@@ -28,6 +28,9 @@ function Navigation() {
         <Link to="/create-workout" className={location.pathname.includes('workout') ? 'active' : ''}>
           Workout
         </Link>
+        <Link to="/progress" className={location.pathname === '/progress' ? 'active' : ''}>
+          Progress
+        </Link>
         <Link to="/settings">Settings</Link>
         <button onClick={handleLogout}>Logout</button>
       </div>
