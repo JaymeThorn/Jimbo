@@ -3,7 +3,23 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getRun, shareRun, getSegmentLeaderboard } from '../services/api';
 import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet';
 import { formatDistance, formatPace } from '../utils/units';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+// Custom markers
+const startIcon = L.divIcon({
+  className: 'custom-marker',
+  html: '<div style="background: #4CAF50; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">▶</div>',
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
+});
+
+const finishIcon = L.divIcon({
+  className: 'custom-marker',
+  html: '<div style="background: #ff6b35; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">🏁</div>',
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
+});
 
 function RunDetailEnhanced() {
   const [run, setRun] = useState(null);
@@ -150,8 +166,8 @@ function RunDetailEnhanced() {
                 weight={4}
               />
             ))}
-            <Marker position={[run.route[0].lat, run.route[0].lng]} />
-            <Marker position={[run.route[run.route.length-1].lat, run.route[run.route.length-1].lng]} />
+            <Marker position={[run.route[0].lat, run.route[0].lng]} icon={startIcon} />
+            <Marker position={[run.route[run.route.length-1].lat, run.route[run.route.length-1].lng]} icon={finishIcon} />
           </MapContainer>
           <div className="map-legend">
             <span style={{color: '#00ff00'}}>■</span> Fast
