@@ -126,11 +126,14 @@ function RunningDashboard() {
       </div>
 
       {/* Personal Records */}
-      {stats.personalRecords && Object.keys(stats.personalRecords).length > 0 && (
+      {stats.personalRecords && (
+        Object.values(stats.personalRecords).some(pr => pr && pr.time) ||
+        (stats.personalRecords.longestRun && stats.personalRecords.longestRun.distance)
+      ) && (
         <div className="section">
           <h3>Personal Records</h3>
           <div className="pr-grid">
-            {stats.personalRecords.fastest5k && (
+            {stats.personalRecords.fastest5k?.time && (
               <div className="pr-card">
                 <div className="pr-distance">5K</div>
                 <div className="pr-time">{formatTime(stats.personalRecords.fastest5k.time)}</div>
@@ -139,7 +142,7 @@ function RunningDashboard() {
                 </div>
               </div>
             )}
-            {stats.personalRecords.fastest10k && (
+            {stats.personalRecords.fastest10k?.time && (
               <div className="pr-card">
                 <div className="pr-distance">10K</div>
                 <div className="pr-time">{formatTime(stats.personalRecords.fastest10k.time)}</div>
@@ -148,7 +151,7 @@ function RunningDashboard() {
                 </div>
               </div>
             )}
-            {stats.personalRecords.fastestHalfMarathon && (
+            {stats.personalRecords.fastestHalfMarathon?.time && (
               <div className="pr-card">
                 <div className="pr-distance">Half Marathon</div>
                 <div className="pr-time">{formatTime(stats.personalRecords.fastestHalfMarathon.time)}</div>
@@ -157,7 +160,7 @@ function RunningDashboard() {
                 </div>
               </div>
             )}
-            {stats.personalRecords.fastestMarathon && (
+            {stats.personalRecords.fastestMarathon?.time && (
               <div className="pr-card">
                 <div className="pr-distance">Marathon</div>
                 <div className="pr-time">{formatTime(stats.personalRecords.fastestMarathon.time)}</div>
@@ -166,7 +169,7 @@ function RunningDashboard() {
                 </div>
               </div>
             )}
-            {stats.personalRecords.longestRun && (
+            {stats.personalRecords.longestRun?.distance && (
               <div className="pr-card">
                 <div className="pr-distance">Longest</div>
                 <div className="pr-time">{formatDistance(stats.personalRecords.longestRun.distance)}</div>
