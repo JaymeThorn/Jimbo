@@ -1298,3 +1298,52 @@ body.dark-mode .pace-zone-bar.easy { background: #2e7d32; color: #e8f5e9; }
 body.dark-mode .pace-zone-bar.tempo { background: #e65100; color: #fff3e0; }
 body.dark-mode .pace-zone-bar.threshold { background: #ad1457; color: #fce4ec; }
 body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
+
+.runs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.run-card {
+  background: var(--bg-secondary);
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+}
+
+.run-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.run-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.run-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.run-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.run-stats-row > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.run-stats-row strong {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
