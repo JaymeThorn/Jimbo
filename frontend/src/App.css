@@ -1526,6 +1526,236 @@ body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
   50% { transform: scale(1.1); }
 }
 
+/* Achievements */
+.achievements-section {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.achievement-badge {
+  background: var(--bg-tertiary);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #ff6b35;
+  transition: transform 0.2s ease;
+}
+
+.achievement-badge:hover {
+  transform: translateY(-4px);
+}
+
+.achievement-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.achievement-name {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.achievement-date {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Activity Feed */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.empty-feed {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.feed-item {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.feed-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.user-name {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.feed-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.route-badge {
+  background: #ff6b35;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feed-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.feed-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.feed-stat .stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.feed-stat .stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.feed-notes {
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.feed-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.kudos-btn, .comment-btn, .view-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.kudos-btn:hover, .comment-btn:hover, .view-btn:hover {
+  background: #ff6b35;
+  color: white;
+  border-color: #ff6b35;
+}
+
+.kudos-btn.active {
+  background: #ff6b35;
+  color: white;
+  border-color: #ff6b35;
+}
+
+.comments-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.comment {
+  padding: 8px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.comment strong {
+  color: #ff6b35;
+  margin-right: 8px;
+}
+
+.comment-date {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.comment-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.comment-input button {
+  padding: 10px 20px;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.comment-input button:hover {
+  background: #f7931e;
+}
+
 .jimbo-auth-header {
   text-align: center;
   margin-bottom: 30px;

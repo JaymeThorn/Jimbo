@@ -71,3 +71,21 @@ export const shareRun = (id) =>
 
 export const getSegmentLeaderboard = (routeName) =>
   api.get(`/runs/segment/${routeName}`);
+
+export const getActivityFeed = () =>
+  api.get('/runs/feed');
+
+export const addKudos = (runId) =>
+  api.post(`/runs/${runId}/kudos`);
+
+export const addComment = (runId, text) =>
+  api.post(`/runs/${runId}/comment`, { text });
+
+export const getUserAchievements = () =>
+  api.get('/runs/achievements');
+
+export const followUser = (targetUserId) =>
+  api.post('/runs/follow', { targetUserId });
+
+export const searchUsers = (query) =>
+  api.get(`/runs/search-users?query=${query}`);

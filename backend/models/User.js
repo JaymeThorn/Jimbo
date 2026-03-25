@@ -12,6 +12,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    default: ''
+  },
+  bio: {
+    type: String,
+    default: ''
+  },
+  profilePicture: {
+    type: String,
+    default: ''
+  },
   runStats: {
     currentStreak: {
       type: Number,
@@ -59,6 +71,14 @@ const userSchema = new mongoose.Schema({
     }
   },
   friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  followers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }]

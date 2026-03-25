@@ -152,13 +152,20 @@ function RunTracker() {
     const pace = duration > 0 ? (duration / 60) / distance : 0;
 
     try {
-      await createRun({
+      const { data } = await createRun({
         distance,
         duration,
         pace,
         route,
         routeName: routeName || undefined
       });
+      
+      // Show achievements if earned
+      if (data.achievements && data.achievements.length > 0) {
+        const achievementNames = data.achievements.map(a => `${a.icon} ${a.name}`).join('\n');
+        alert(`🎉 New Achievements!\n\n${achievementNames}`);
+      }
+      
       navigate('/running');
     } catch (err) {
       alert('Failed to save run');

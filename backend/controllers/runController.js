@@ -1,6 +1,7 @@
 const Run = require('../models/Run');
 const User = require('../models/User');
 const analytics = require('../utils/runAnalytics');
+const achievements = require('../utils/achievements');
 
 exports.getRuns = async (req, res) => {
   try {
@@ -13,7 +14,9 @@ exports.getRuns = async (req, res) => {
 
 exports.getRunById = async (req, res) => {
   try {
-    const run = await Run.findOne({ _id: req.params.id, userId: req.userId });
+    const run = await Run.findOne({ _id: req.params.id, userId: req.userId })
+      .populate('kudos.userId', 'email name')
+      .populate('comments.userId', 'email name');
     if (!run) {
       return res.status(404).json({ error: 'Run not found' });
     }
@@ -60,7 +63,10 @@ exports.createRun = async (req, res) => {
     // Update user stats
     await analytics.updateUserStats(User, req.userId, run);
     
-    res.status(201).json(run);
+    // Check for achievements
+    const newAchievements = await achievements.checkAchievements(User, req.userId, run);
+    
+    res.status(201).json({ run, achievements: newAchievements });
   } catch (error) {
     console.error('Create run error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -196,6 +202,133 @@ exports.getHeatmapData = async (req, res) => {
     }, []);
     
     res.json(allPoints);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.addKudos = async (req, res) => {
+  try {
+    const run = await Run.findById(req.params.id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    // Check if already gave kudos
+    const alreadyKudos = run.kudos.some(k => k.userId.toString() === req.userId);
+    if (alreadyKudos) {
+      // Remove kudos
+      run.kudos = run.kudos.filter(k => k.userId.toString() !== req.userId);
+    } else {
+      // Add kudos
+      run.kudos.push({ userId: req.userId });
+    }
+
+    await run.save();
+    await run.populate('kudos.userId', 'email name');
+    
+    res.json(run);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.addComment = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const run = await Run.findById(req.params.id);
+    if (!run) {
+      return res.status(404).json({ error: 'Run not found' });
+    }
+
+    run.comments.push({ userId: req.userId, text });
+    await run.save();
+    await run.populate('comments.userId', 'email name');
+    
+    res.json(run);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.getActivityFeed = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    const followingIds = user.following || [];
+    
+    // Get runs from people you follow + your own
+    const runs = await Run.find({
+      $or: [
+        { userId: { $in: followingIds }, isShared: true },
+        { userId: req.userId }
+      ]
+    })
+      .populate('userId', 'email name profilePicture')
+      .populate('kudos.userId', 'email name')
+      .populate('comments.userId', 'email name')
+      .sort({ date: -1 })
+      .limit(50);
+    
+    res.json(runs);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.getUserAchievements = async (req, res) => {
+  try {
+    const userAchievements = await achievements.getUserAchievements(req.userId);
+    res.json(userAchievements);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.followUser = async (req, res) => {
+  try {
+    const { targetUserId } = req.body;
+    const user = await User.findById(req.userId);
+    const targetUser = await User.findById(targetUserId);
+
+    if (!targetUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isFollowing = user.following.includes(targetUserId);
+    
+    if (isFollowing) {
+      // Unfollow
+      user.following = user.following.filter(id => id.toString() !== targetUserId);
+      targetUser.followers = targetUser.followers.filter(id => id.toString() !== req.userId);
+    } else {
+      // Follow
+      user.following.push(targetUserId);
+      targetUser.followers.push(req.userId);
+    }
+
+    await user.save();
+    await targetUser.save();
+    
+    res.json({ following: !isFollowing });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    const users = await User.find({
+      $or: [
+        { email: { $regex: query, $options: 'i' } },
+        { name: { $regex: query, $options: 'i' } }
+      ],
+      _id: { $ne: req.userId }
+    })
+      .select('email name profilePicture')
+      .limit(20);
+    
+    res.json(users);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

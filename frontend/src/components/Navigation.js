@@ -16,6 +16,9 @@ function Navigation() {
         <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
           Dashboard
         </Link>
+        <Link to="/feed" className={location.pathname === '/feed' ? 'active' : ''}>
+          Feed
+        </Link>
         <Link to="/running" className={location.pathname.startsWith('/run') ? 'active' : ''}>
           Running
         </Link>

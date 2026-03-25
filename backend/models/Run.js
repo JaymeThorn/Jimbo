@@ -65,9 +65,30 @@ const runSchema = new mongoose.Schema({
   routeName: String, // for segment tracking
   isShared: {
     type: Boolean,
-    default: false
+    default: true
   },
-  notes: String
+  notes: String,
+  kudos: [{
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  comments: [{
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    text: String,
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, { timestamps: true });
 
 // Index for finding personal records
