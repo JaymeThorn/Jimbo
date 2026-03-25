@@ -12,6 +12,7 @@ import RunTracker from './pages/RunTracker';
 import RunDetailEnhanced from './pages/RunDetailEnhanced';
 import RunningDashboard from './pages/RunningDashboard';
 import ActivityFeed from './pages/ActivityFeed';
+import FindPeople from './pages/FindPeople';
 import Settings from './pages/Settings';
 import PrivateRoute from './components/PrivateRoute';
 import ThemeToggle from './components/ThemeToggle';
@@ -40,6 +41,7 @@ function AppContent() {
         <Route path="/run-tracker" element={<PrivateRoute><RunTracker /></PrivateRoute>} />
         <Route path="/run/:id" element={<PrivateRoute><RunDetailEnhanced /></PrivateRoute>} />
         <Route path="/feed" element={<PrivateRoute><ActivityFeed /></PrivateRoute>} />
+        <Route path="/find-people" element={<PrivateRoute><FindPeople /></PrivateRoute>} />
         <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" />} />
       </Routes>

@@ -1756,6 +1756,106 @@ body.dark-mode .pace-zone-bar.interval { background: #6a1b9a; color: #f3e5f5; }
   background: #f7931e;
 }
 
+/* Find People */
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.search-box button {
+  padding: 16px 32px;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+.user-result {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.user-result .user-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 900;
+  font-size: 24px;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-info .user-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.user-info .user-email {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.btn-follow, .btn-following {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-follow {
+  background: #ff6b35;
+  color: white;
+}
+
+.btn-follow:hover {
+  background: #f7931e;
+}
+
+.btn-following {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 2px solid #ff6b35;
+}
+
+.btn-following:hover {
+  background: var(--bg-secondary);
+}
+
 .jimbo-auth-header {
   text-align: center;
   margin-bottom: 30px;

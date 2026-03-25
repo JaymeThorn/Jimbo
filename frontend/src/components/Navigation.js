@@ -19,15 +19,15 @@ function Navigation() {
         <Link to="/feed" className={location.pathname === '/feed' ? 'active' : ''}>
           Feed
         </Link>
+        <Link to="/find-people" className={location.pathname === '/find-people' ? 'active' : ''}>
+          Find People
+        </Link>
         <Link to="/running" className={location.pathname.startsWith('/run') ? 'active' : ''}>
           Running
         </Link>
         <Link to="/create-workout" className={location.pathname.includes('workout') ? 'active' : ''}>
           Workout
         </Link>
-        <Link to="/templates">Templates</Link>
-        <Link to="/progress">Progress</Link>
-        <Link to="/health-sync">Sync</Link>
         <Link to="/settings">Settings</Link>
         <button onClick={handleLogout}>Logout</button>
       </div>
