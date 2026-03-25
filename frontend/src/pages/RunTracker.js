@@ -86,52 +86,42 @@ function RunTracker() {
           lng: longitude,
           timestamp: Date.now(),
           elevation: altitude || 0,
-          speed: speed ? speed * 3.6 : 0 // convert m/s to km/h
+          speed: speed ? speed * 3.6 : 0
         };
 
         setRoute(prev => [...prev, newPoint]);
         setCurrentSpeed(newPoint.speed);
         lastMoveTime.current = Date.now();
 
-        if (lastPosition) {
-          const dist = calculateDistance(
-            lastPosition.lat,
-            lastPosition.lng,
-            latitude,
-            longitude
-          );
-          
-          // Only add distance if movement is significant (more than 2 meters)
-          if (dist > 0.002) {
-            const newDistance = distance + dist;
-            setDistance(newDistance);
+        setLastPosition(prevPos => {
+          if (prevPos) {
+            const dist = calculateDistance(
+              prevPos.lat,
+              prevPos.lng,
+              latitude,
+              longitude
+            );
             
-            // Check for km splits
-            const currentKm = Math.floor(newDistance);
-            const previousKm = Math.floor(distance);
-            if (currentKm > previousKm && currentKm > 0) {
-              const splitTime = duration;
-              const lastSplitTime = splits.length > 0 ? splits[splits.length - 1].time : 0;
-              setSplits(prev => [...prev, {
-                km: currentKm,
-                time: splitTime - lastSplitTime,
-                pace: (splitTime - lastSplitTime) / 60
-              }]);
+            // Add any movement over 1 meter
+            if (dist > 0.001) {
+              setDistance(prev => {
+                const newDist = prev + dist;
+                console.log('Distance updated:', newDist.toFixed(3), 'km');
+                return newDist;
+              });
             }
           }
-        }
-
-        setLastPosition({ lat: latitude, lng: longitude });
+          return { lat: latitude, lng: longitude };
+        });
       },
       (error) => {
-        console.error('Error getting location:', error);
-        alert('Unable to get your location. Please enable GPS.');
+        console.error('GPS error:', error);
+        alert('GPS error: ' + error.message);
       },
       {
         enableHighAccuracy: true,
         maximumAge: 0,
-        timeout: 10000,
-        distanceFilter: 2 // Only update when moved 2 meters
+        timeout: 30000
       }
     );
 
